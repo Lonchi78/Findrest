@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Findrest</string>
+    <string name="btn_search">Search</string>
+    <string name="btn_favourites">Favourites</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="fragment_search">Hello Search fragment</string>
+    <string name="fragment_favourites">Hello Favourites fragment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
