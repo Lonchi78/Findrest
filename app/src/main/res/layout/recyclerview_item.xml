@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="120dp"
+                                                   android:id="@+id/constraitLayout">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="3dp"
+            android:background="@drawable/bg_item_round"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
+            android:id="@+id/cardView">
+
+        <TextView
+                android:id="@+id/tvRestaurantName"
+                android:text="@string/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/scheme1Red"
+                app:layout_constraintTop_toTopOf="@+id/ivRestaurantThumb"
+                app:layout_constraintStart_toEndOf="@+id/ivRestaurantThumb"
+                android:layout_marginStart="16dp"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/ivRestaurantThumb"
+                android:elevation="2dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp" app:srcCompat="@color/scheme1Yellow"
+                android:src="@color/scheme1Yellow"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp" app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+                android:text="@string/item_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:id="@+id/tvRestaurantAddress"
+                app:layout_constraintTop_toBottomOf="@+id/tvRestaurantName"
+                app:layout_constraintStart_toEndOf="@+id/ivRestaurantThumb" android:layout_marginStart="16dp"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:tint="@color/scheme1Red"
+                android:layout_height="wrap_content" app:srcCompat="@drawable/ic_star_black_24dp"
+                android:id="@+id/ivRestaurantIcon" app:layout_constraintStart_toEndOf="@+id/ivRestaurantThumb"
+                android:layout_marginStart="16dp" app:layout_constraintTop_toBottomOf="@+id/tvRestaurantAddress"
+        />
+        <TextView
+                android:text="@string/item_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:id="@+id/tvRestaurantRating" app:layout_constraintStart_toEndOf="@+id/ivRestaurantIcon"
+                android:layout_marginStart="4dp"
+                app:layout_constraintTop_toTopOf="@+id/ivRestaurantIcon" android:layout_marginTop="4dp"/>
+        <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp" app:srcCompat="@drawable/ic_restaurant_menu_black_24dp"
+                android:id="@+id/icRestaurantMenu"
+                android:tint="@color/scheme1Yellow"
+                android:padding="12dp"
+                android:elevation="2dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent" android:cropToPadding="false"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

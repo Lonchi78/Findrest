@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">@color/scheme1Grey</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">@color/scheme1Grey</color>
+
+    <!--    Pallete 1   -->
+    <color name="scheme1Red">#F97350</color>
+    <color name="scheme1Yellow">#FAD06C</color>
+    <color name="scheme1Grey">#F7F2E5</color>
+    <color name="scheme1Brown">#B7AC9A</color>
+    <color name="scheme1WhiteA10">#FFFFFF</color>
+    <color name="scheme1WhiteA9">#B3FFFFFF</color>
+    <color name="scheme1WhiteA6">#99FFFFFF</color>
+    <color name="scheme1Transparent">#00FFFFFF</color>
 </resources>

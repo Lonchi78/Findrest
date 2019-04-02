@@ -4,15 +4,44 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/navigation_graph"
             app:startDestination="@id/mainFragment">
 
-    <fragment android:id="@+id/mainFragment" android:name="com.lonchi.andrej.findrest.MainFragment"
+    <fragment android:id="@+id/mainFragment" android:name="com.lonchi.andrej.findrest.UI.MainFragment"
               android:label="fragment_main" tools:layout="@layout/fragment_main">
         <action android:id="@+id/actionToSearch" app:destination="@id/searchFragment"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim">
+            <argument android:defaultValue="Brno" android:name="searchQuery"/>
+        </action>
+        <action android:id="@+id/actionToOffline" app:destination="@id/offlineFragment"
                 app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"/>
-        <action android:id="@+id/actionToFavourites" app:destination="@id/favouritesFragment"
+        <action android:id="@+id/actionToGeocode" app:destination="@id/geocodeFragment"
                 app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"/>
     </fragment>
-    <fragment android:id="@+id/searchFragment" android:name="com.lonchi.andrej.findrest.SearchFragment"
-              android:label="fragment_search" tools:layout="@layout/fragment_search"/>
-    <fragment android:id="@+id/favouritesFragment" android:name="com.lonchi.andrej.findrest.FavouritesFragment"
-              android:label="fragment_favourites" tools:layout="@layout/fragment_favourites"/>
+
+    <fragment android:id="@+id/searchFragment" android:name="com.lonchi.andrej.findrest.UI.SearchFragment"
+              android:label="fragment_search" tools:layout="@layout/fragment_search">
+        <argument android:name="searchQuery" app:argType="string"/>
+        <action android:id="@+id/fromSearchToDailymenu" app:destination="@id/dailymenuFragment"
+                app:enterAnim="@anim/nav_default_pop_enter_anim" app:exitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action android:id="@+id/fromSearchToRestaurant" app:destination="@id/restaurantFragment"
+                app:enterAnim="@anim/nav_default_pop_enter_anim" app:exitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <fragment android:id="@+id/offlineFragment" android:name="com.lonchi.andrej.findrest.UI.OfflineFragment"
+              android:label="fragment_favourites" tools:layout="@layout/fragment_offline">
+        <action android:id="@+id/fromOfflineToRestaurant"
+                app:destination="@id/restaurantFragment" app:enterAnim="@anim/nav_default_pop_enter_anim"
+                app:exitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <fragment android:id="@+id/geocodeFragment" android:name="com.lonchi.andrej.findrest.UI.geocodeFragment"
+              android:label="fragment_geocode" tools:layout="@layout/fragment_geocode">
+        <action android:id="@+id/fromGeocodeToDailymenu" app:destination="@id/dailymenuFragment"
+                app:enterAnim="@anim/nav_default_pop_enter_anim" app:exitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action android:id="@+id/fromGeocodeToRestaurant"
+                app:destination="@id/restaurantFragment" app:enterAnim="@anim/nav_default_pop_enter_anim"
+                app:exitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+    <fragment android:id="@+id/restaurantFragment" android:name="com.lonchi.andrej.findrest.UI.RestaurantFragment"
+              android:label="fragment_restaurant" tools:layout="@layout/fragment_restaurant"/>
+    <fragment android:id="@+id/dailymenuFragment" android:name="com.lonchi.andrej.findrest.UI.DailymenuFragment"
+              android:label="fragment_dailymenu" tools:layout="@layout/fragment_dailymenu"/>
 </navigation>
