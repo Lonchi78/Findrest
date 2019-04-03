@@ -13,11 +13,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.lonchi.andrej.findrest.BuildConfig
+import com.lonchi.andrej.findrest.Data.RestaurantListAdapter
 import com.lonchi.andrej.findrest.Data.ZomatoApiService
 import com.lonchi.andrej.findrest.Data.db.RestaurantDatabase
 import com.lonchi.andrej.findrest.R
@@ -29,29 +35,59 @@ import java.lang.StringBuilder
 
 class geocodeFragment : Fragment() {
 
-    /**
-     * Provides the entry point to the Fused Location Provider API.
-     */
+    //  Provides the entry point to the Fused Location Provider API
     private var mFusedLocationClient: FusedLocationProviderClient? = null
 
-    /**
-     * Represents a geographical location.
-     */
+    //  Geographical location
     protected var mLastLocation: Location? = null
 
-    private lateinit var viewOfLayout: View
+    //  Geographical data
     var locationLat: Double = -1.0
     var locationLon: Double = -1.0
+
+    //  View of this UI
+    private lateinit var viewOfLayout: View
+
+    //  ViewModel for this UI
+    private lateinit var searchViewModel: GeocodeViewmodel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         // Inflate the layout for this fragment
         viewOfLayout = inflater!!.inflate(R.layout.fragment_geocode, container, false)
 
+        //  Setup fucsed location client
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        //  Progressbar
+        val mProgressBar = viewOfLayout.findViewById<ProgressBar>(R.id.pbLoading)
+        mProgressBar.visibility = View.VISIBLE
+
+        //  Recycler view adapter
+        val recyclerView = viewOfLayout.findViewById<RecyclerView>(R.id.recyclerview)
+        val adapter = RestaurantListAdapter(requireContext())
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        //  Apply viewModel
+        searchViewModel = ViewModelProviders.of(this).get(GeocodeViewmodel::class.java)
+
+        //  Observer
+        searchViewModel.foundRestaurants.observe(this, Observer { restaurants ->
+            Log.d("FUCK", "UI upd")
+            //Log.d("FUCK", restaurants[0].name)
+            //Log.d("FUCK", restaurants?.toString())
+            // Update the cached copy of the words in the adapter.
+            restaurants?.let {
+                Log.d("FUCK", "UI update")
+                mProgressBar.visibility = View.INVISIBLE
+                adapter.setWords(it)
+            }
+        })
+
+
 
         return viewOfLayout
     }
@@ -61,12 +97,9 @@ class geocodeFragment : Fragment() {
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        tvLatitude.text = locationLat.toString()
-        tvLongitude.text = locationLon.toString()
-
     }
 
+    /*
     private fun getRestaurants(){
         //  Get api
         val mApiService = ZomatoApiService()
@@ -83,7 +116,7 @@ class geocodeFragment : Fragment() {
                 sb.append(item.restaurant.name)
                 sb.append("\n")
             }
-            tvResponse.text = sb.toString()
+            //tvResponse.text = sb.toString()
 
             //  TODO    Hocus
             val db = Room.databaseBuilder(
@@ -94,6 +127,7 @@ class geocodeFragment : Fragment() {
             db.RestaurantDao().upsert(geocodeObject.nearbyRestaurants[0].restaurant)
         }
     }
+    */
 
     /**
      * Shows a [].
@@ -138,10 +172,11 @@ class geocodeFragment : Fragment() {
                     Log.d(TAG, "getLastLocation:setText")
                     locationLat = mLastLocation!!.latitude
                     locationLon = mLastLocation!!.longitude
+                    //getRestaurants()
+                    //  Start search
+                    searchViewModel.executeGeocode(locationLat, locationLon)
+                    Log.d("FUCK", "UI call exec")
 
-                    tvLatitude.text = mLastLocation!!.latitude.toString()
-                    tvLongitude.text = mLastLocation!!.longitude.toString()
-                    getRestaurants()
                 } else {
                     Log.d(TAG, "getLastLocation:exception", task.exception)
                 }

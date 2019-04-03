@@ -2,12 +2,15 @@ package com.lonchi.andrej.findrest.UI
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -19,9 +22,12 @@ import kotlinx.android.synthetic.main.fragment_offline.*
 
 class OfflineFragment : Fragment() {
 
+    //  View of this layout
     private lateinit var viewOfLayout: View
 
-    private lateinit var geocodeViewModel: GeocodeViewmodel
+    //  ViewModel for this UI
+    private lateinit var offlineViewModel: OfflineViewmodel
+    private val TAG = "OfflineFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,39 +36,60 @@ class OfflineFragment : Fragment() {
         // Inflate the layout for this fragment
         viewOfLayout = inflater!!.inflate(R.layout.fragment_offline, container, false)
 
+        //  Progressbar
+        val mProgressBar = viewOfLayout.findViewById<ProgressBar>(R.id.pbLoading)
+        mProgressBar.visibility = View.VISIBLE
+
         //  Recycler view adapter
         val recyclerView = viewOfLayout.findViewById<RecyclerView>(R.id.recyclerview)
         val adapter = RestaurantListAdapter(requireContext())
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-
         //  Apply viewModel
-        geocodeViewModel = ViewModelProviders.of(this).get(GeocodeViewmodel::class.java)
+        offlineViewModel = ViewModelProviders.of(this).get(OfflineViewmodel::class.java)
 
         //  Observer
-        geocodeViewModel.allWords.observe(this, Observer { restaurants ->
-            // Update the cached copy of the words in the adapter.
+        offlineViewModel.allRestaurants.observe(this, Observer { restaurants ->
+            //  Update the cached copy of the restaurants in the adapter
+            mProgressBar.visibility = View.INVISIBLE
             restaurants?.let { adapter.setWords(it) }
         })
 
+        //  Add swipe gesture to delete item
+        val callback = object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                //  Do nothing
+                //  TODO    arguments should be empty for onMove func, null alternative?
+                Log.d(TAG, "item callback onMove()" )
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val deletedRestaurant = adapter.getItemAt(viewHolder.adapterPosition)
+                Log.d(TAG, "item callback onSwiped() on " )
+                offlineViewModel.delete( deletedRestaurant )
+            }
+
+        }
+        val helper = ItemTouchHelper(callback)
+        helper.attachToRecyclerView(recyclerView)
+
+        //  Command to delete whole database!
+        //deleteAllDatabase()
 
         return viewOfLayout
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
 
-        /*
-        //  TODO    Hocus
-        val db = Room.databaseBuilder(
-            requireContext(),
-            RestaurantDatabase::class.java, "restaurant.db"
-        ).allowMainThreadQueries().build()
-
-        val restaurants = db.RestaurantDao().getFirstRestaurant()
-        tvHocus.text = restaurants.name
-        */
-
+    private fun deleteAllDatabase(){
+        offlineViewModel.deleteAll()
     }
 }

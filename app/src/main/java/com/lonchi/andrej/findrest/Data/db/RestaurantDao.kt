@@ -22,6 +22,4 @@ interface RestaurantDao {
     @Query("SELECT * FROM restaurant WHERE id=:res_id")
     fun getRestaurantById(res_id: String): LiveData<Restaurant>
 
-    @Query("SELECT * FROM restaurant LIMIT 1")
-    fun getFirstRestaurant(): Restaurant
 }

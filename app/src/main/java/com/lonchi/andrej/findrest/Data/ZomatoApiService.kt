@@ -1,12 +1,15 @@
 package com.lonchi.andrej.findrest.Data
 
+import androidx.lifecycle.LiveData
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.lonchi.andrej.findrest.Data.Response.getDailymenu.DailyMenus
 import com.lonchi.andrej.findrest.Data.db.entity.FetchGeocode
 import com.lonchi.andrej.findrest.Data.db.entity.FetchSearch
+import com.lonchi.andrej.findrest.Data.db.entity.Restaurant
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET

@@ -5,17 +5,19 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.lonchi.andrej.findrest.Data.GeocodeRepository
+import androidx.lifecycle.Transformations
+import com.lonchi.andrej.findrest.Data.Repository
 import com.lonchi.andrej.findrest.Data.Response.SearchRepository
 import com.lonchi.andrej.findrest.Data.db.RestaurantDatabase
 import com.lonchi.andrej.findrest.Data.db.entity.Restaurant
+import com.lonchi.andrej.findrest.Data.db.entity.Restaurants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class GeocodeViewmodel(application: Application) : AndroidViewModel(application) {
+class SearchViewmodel(application: Application) : AndroidViewModel(application) {
 
     //  Variables for async jobs
     private var parentJob = Job()
@@ -46,9 +48,9 @@ class GeocodeViewmodel(application: Application) : AndroidViewModel(application)
         repository.deleteAll()
     }
 
-    fun executeGeocode(lat: Double, lon: Double) = scope.launch(Dispatchers.IO) {
+    fun executeSearch(query: String?) = scope.launch(Dispatchers.IO) {
         Log.d("FUCK", "WM exec")
-        repository.executeGeocode(lat, lon)
+        repository.executeSearch(query)
         foundRestaurants.postValue(repository.foundRestaurants.value)
         Log.d("FUCK", "WM post exec")
         Log.d("FUCK", foundRestaurants.toString())
