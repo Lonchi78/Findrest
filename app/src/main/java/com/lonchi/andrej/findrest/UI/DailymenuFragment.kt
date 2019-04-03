@@ -14,6 +14,8 @@ import com.lonchi.andrej.findrest.R
 
 class DailymenuFragment : Fragment() {
 
+    //  TODO    ->  store and show daily menus (this is only longtime menu from url)
+
     //  View of this layout
     private lateinit var viewOfLayout: View
 
@@ -25,7 +27,7 @@ class DailymenuFragment : Fragment() {
         // Inflate the layout for this fragment
         viewOfLayout = inflater!!.inflate(R.layout.fragment_dailymenu, container, false)
 
-        val menuUrl = arguments?.getString("menuUrl")
+        val menuUrl = arguments?.getString("menu_url")
 
         val mWebView = viewOfLayout.findViewById<WebView>(R.id.webviewDailymenu)
         mWebView.settings.javaScriptEnabled = true

@@ -20,6 +20,6 @@ interface RestaurantDao {
     fun getAllRestaurants(): LiveData<List<Restaurant>>
 
     @Query("SELECT * FROM restaurant WHERE id=:res_id")
-    fun getRestaurantById(res_id: String): LiveData<Restaurant>
+    fun getRestaurantById(res_id: String): Restaurant
 
 }

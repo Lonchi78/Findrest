@@ -23,8 +23,8 @@ class OfflineViewmodel(application: Application) : AndroidViewModel(application)
     val allRestaurants: LiveData<List<Restaurant>>
 
     init {
-        val wordsDao = RestaurantDatabase.getDatabase(application).RestaurantDao()
-        repository = Repository(wordsDao)
+        val restaurantDao = RestaurantDatabase.getDatabase(application).RestaurantDao()
+        repository = Repository(restaurantDao)
         allRestaurants = repository.allRestaurants
     }
 

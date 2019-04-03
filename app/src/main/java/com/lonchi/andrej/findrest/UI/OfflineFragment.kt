@@ -13,9 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.lonchi.andrej.findrest.Data.RestaurantListAdapter
-import com.lonchi.andrej.findrest.Data.db.RestaurantDatabase
 import com.lonchi.andrej.findrest.R
 import kotlinx.android.synthetic.main.fragment_offline.*
 
@@ -27,7 +25,7 @@ class OfflineFragment : Fragment() {
 
     //  ViewModel for this UI
     private lateinit var offlineViewModel: OfflineViewmodel
-    private val TAG = "OfflineFragment"
+    private val TAG = "Offline Fragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,8 +50,10 @@ class OfflineFragment : Fragment() {
         //  Observer
         offlineViewModel.allRestaurants.observe(this, Observer { restaurants ->
             //  Update the cached copy of the restaurants in the adapter
-            mProgressBar.visibility = View.INVISIBLE
-            restaurants?.let { adapter.setWords(it) }
+            restaurants?.let {
+                mProgressBar.visibility = View.INVISIBLE
+                adapter.setWords(it)
+            }
         })
 
         //  Add swipe gesture to delete item
@@ -70,8 +70,9 @@ class OfflineFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val deletedRestaurant = adapter.getItemAt(viewHolder.adapterPosition)
+                //  Swipe gest -> delete restaurant
                 Log.d(TAG, "item callback onSwiped() on " )
+                val deletedRestaurant = adapter.getItemAt(viewHolder.adapterPosition)
                 offlineViewModel.delete( deletedRestaurant )
             }
 

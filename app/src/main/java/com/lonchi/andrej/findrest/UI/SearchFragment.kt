@@ -1,10 +1,8 @@
 package com.lonchi.andrej.findrest.UI
 
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.util.Log.d
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,10 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lonchi.andrej.findrest.Data.RestaurantListAdapter
 import kotlinx.android.synthetic.main.fragment_search.*
-import com.lonchi.andrej.findrest.Data.ZomatoApiService
 import com.lonchi.andrej.findrest.R
-import kotlinx.coroutines.*
-import java.lang.StringBuilder
 
 
 class SearchFragment : Fragment() {
@@ -55,12 +50,13 @@ class SearchFragment : Fragment() {
 
         //  Observer
         searchViewModel.foundRestaurants.observe(this, Observer { restaurants ->
-            Log.d("FUCK", "UI upd")
-            //Log.d("FUCK", restaurants[0].name)
-            Log.d("FUCK", restaurants?.toString())
+            Log.d("Search Fragment", "observed")
+
             // Update the cached copy of the words in the adapter.
             restaurants?.let {
-                Log.d("FUCK", "UI update")
+                Log.d("Search Fragment", "observed update")
+
+                //  Update recyclerAdapter and stop progressBar
                 mProgressBar.visibility = View.INVISIBLE
                 adapter.setWords(it)
             }
@@ -68,7 +64,6 @@ class SearchFragment : Fragment() {
 
         //  Start search
         searchViewModel.executeSearch(argumentQuery.toString())
-        Log.d("FUCK", "UI call exec")
 
         return viewOfLayout
     }

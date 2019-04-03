@@ -15,6 +15,13 @@
     <string name="item_name">Corleones pasta</string>
     <string name="item_address">Česká 34, Brno střed</string>
     <string name="item_rating">4.7</string>
+    <string name="restaurant_name">Corleones pasta</string>
+    <string name="restaurant_address">Česká 34, Brno střed</string>
+    <string name="restaurant_url">http:corleone.cz/</string>
+    <string name="restaurant_photos">http:corleone.cz/photos</string>
+    <string name="restaurant_menu">http:corleone.cz/menu</string>
+    <string name="restaurant_cuisines">Czech, Italian, Pizza</string>
+    <string name="restaurant_rating">4.7</string>
 
     <!--    Fragments    -->
     <string name="fragment_search">Hello Search fragment</string>

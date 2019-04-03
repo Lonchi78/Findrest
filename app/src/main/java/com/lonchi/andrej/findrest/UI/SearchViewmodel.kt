@@ -3,14 +3,10 @@ package com.lonchi.andrej.findrest.UI
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.lonchi.andrej.findrest.Data.Repository
-import com.lonchi.andrej.findrest.Data.Response.SearchRepository
 import com.lonchi.andrej.findrest.Data.db.RestaurantDatabase
 import com.lonchi.andrej.findrest.Data.db.entity.Restaurant
-import com.lonchi.andrej.findrest.Data.db.entity.Restaurants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -29,31 +25,20 @@ class SearchViewmodel(application: Application) : AndroidViewModel(application) 
     var foundRestaurants = MutableLiveData<List<Restaurant>>()
 
     //  Repository
-    private val repository: SearchRepository
+    private val repository: Repository
 
     init {
         val restaurantDao = RestaurantDatabase.getDatabase(application).RestaurantDao()
-        repository = SearchRepository(restaurantDao)
-    }
-
-    fun upsert(restaurant: Restaurant) = scope.launch(Dispatchers.IO) {
-        repository.upsert(restaurant)
-    }
-
-    fun delete(restaurant: Restaurant) = scope.launch(Dispatchers.IO) {
-        repository.delete(restaurant)
-    }
-
-    fun deleteAll() = scope.launch(Dispatchers.IO) {
-        repository.deleteAll()
+        repository = Repository(restaurantDao)
     }
 
     fun executeSearch(query: String?) = scope.launch(Dispatchers.IO) {
-        Log.d("FUCK", "WM exec")
+        Log.d("Search VM", "execute search")
+
+        //  Execute search and obtain LiveData
         repository.executeSearch(query)
         foundRestaurants.postValue(repository.foundRestaurants.value)
-        Log.d("FUCK", "WM post exec")
-        Log.d("FUCK", foundRestaurants.toString())
+        Log.d("Search VM", foundRestaurants.toString())
     }
 
     override fun onCleared() {

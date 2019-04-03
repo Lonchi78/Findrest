@@ -2,7 +2,6 @@ package com.lonchi.andrej.findrest.UI
 
 
 import android.os.Bundle
-import android.util.Log.d
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +13,8 @@ import kotlinx.android.synthetic.main.fragment_main.*
 
 
 class MainFragment : Fragment() {
+
+    //  TODO    ->  reqiure permissions and check GPS and Internet signal
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -35,6 +35,8 @@ import java.lang.StringBuilder
 
 class geocodeFragment : Fragment() {
 
+    //  TODO    ->  reqiure permissions and check GPS and Internet signal
+
     //  Provides the entry point to the Fused Location Provider API
     private var mFusedLocationClient: FusedLocationProviderClient? = null
 
@@ -76,18 +78,17 @@ class geocodeFragment : Fragment() {
 
         //  Observer
         searchViewModel.foundRestaurants.observe(this, Observer { restaurants ->
-            Log.d("FUCK", "UI upd")
-            //Log.d("FUCK", restaurants[0].name)
-            //Log.d("FUCK", restaurants?.toString())
+            Log.d("Geocode Fragment", "observed")
+
             // Update the cached copy of the words in the adapter.
             restaurants?.let {
-                Log.d("FUCK", "UI update")
+                Log.d("Geocode Fragment", "observed update")
+
+                //  Update recyclerAdapter and stop progressBar
                 mProgressBar.visibility = View.INVISIBLE
                 adapter.setWords(it)
             }
         })
-
-
 
         return viewOfLayout
     }
@@ -99,35 +100,6 @@ class geocodeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    /*
-    private fun getRestaurants(){
-        //  Get api
-        val mApiService = ZomatoApiService()
-
-        GlobalScope.launch(Dispatchers.Main) {
-            val geocodeResponse = mApiService.getGeocode(locationLat, locationLon)
-            val geocodeObject = geocodeResponse.await()
-
-            Log.d("Zomato", geocodeObject.toString())
-            Log.d("Zomato 1st restaurant", geocodeObject.nearbyRestaurants[0].restaurant.name)
-
-            var sb = StringBuilder()
-            for(item in geocodeObject.nearbyRestaurants){
-                sb.append(item.restaurant.name)
-                sb.append("\n")
-            }
-            //tvResponse.text = sb.toString()
-
-            //  TODO    Hocus
-            val db = Room.databaseBuilder(
-                requireContext(),
-                RestaurantDatabase::class.java, "restaurant.db"
-            ).allowMainThreadQueries().build()
-
-            db.RestaurantDao().upsert(geocodeObject.nearbyRestaurants[0].restaurant)
-        }
-    }
-    */
 
     /**
      * Shows a [].
@@ -175,7 +147,6 @@ class geocodeFragment : Fragment() {
                     //getRestaurants()
                     //  Start search
                     searchViewModel.executeGeocode(locationLat, locationLon)
-                    Log.d("FUCK", "UI call exec")
 
                 } else {
                     Log.d(TAG, "getLastLocation:exception", task.exception)
@@ -203,8 +174,10 @@ class geocodeFragment : Fragment() {
         val shouldProvideRationale = ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
             android.Manifest.permission.ACCESS_COARSE_LOCATION)
 
+        /*
         // Provide an additional rationale to the user. This would happen if the user denied the
         // request previously, but didn't check the "Don't ask again" checkbox.
+        */
         if (shouldProvideRationale) {
             Log.d(TAG, "Displaying permission rationale to provide additional context.")
 
@@ -217,9 +190,11 @@ class geocodeFragment : Fragment() {
 
         } else {
             Log.d(TAG, "Requesting permission")
+            /*
             // Request permission. It's possible this can be auto answered if device policy
             // sets the permission in a given state or the user denied the permission
             // previously and checked "Never ask again".
+            */
             startLocationPermissionRequest()
         }
     }
@@ -232,13 +207,16 @@ class geocodeFragment : Fragment() {
         Log.d(TAG, "onRequestPermissionResult")
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.size <= 0) {
+                /*
                 // If user interaction was interrupted, the permission request is cancelled and you
                 // receive empty arrays.
+                */
                 Log.d(TAG, "User interaction was cancelled.")
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted.
                 getLastLocation()
             } else {
+                /*
                 // Permission denied.
 
                 // Notify the user via a SnackBar that they have rejected a core permission for the
@@ -250,6 +228,7 @@ class geocodeFragment : Fragment() {
                 // again" prompts). Therefore, a user interface affordance is typically implemented
                 // when permissions are denied. Otherwise, your app could appear unresponsive to
                 // touches or interactions which have required permissions.
+                */
                 showSnackbar(
                     R.string.btn_geocode, R.string.btn_geocode,
                     View.OnClickListener {
